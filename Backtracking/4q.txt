@@ -1,0 +1,86 @@
+
+#define N 4 
+#include <stdbool.h> 
+#include <stdio.h> 
+
+
+void printSolution(int board[N][N]) 
+{ 
+	for (int ith = 0; ith< N; ith++) { 
+		for (int jth = 0; jth< N; jth++) 
+			printf(" %d ", board[ith][jth]); 
+		printf("\n"); 
+	} 
+} 
+
+
+bool isSafe(int b[N][N], int row, int col) 
+{ 
+	int ith, jth; 
+
+	for (ith = 0; ith< col; ith++) 
+		if (b[row][ith]) 
+			return false; 
+
+
+	for (ith = row, jth = col; ith >= 0 && jth >= 0; ith--, jth--) 
+		if (b[ith][jth]) 
+			return false; 
+
+
+	for (ith = row, jth = col; jth >= 0 && i < N; ith++, jth--) 
+		if (b[ith][j]) 
+			return false; 
+
+	return true; 
+} 
+
+
+bool solveNQUtil(int board[N][N], int col) 
+{ 
+	
+	if (col >= N) 
+		return true; 
+
+	
+	for (int i = 0; i < N; i++) { 
+		
+		if (isSafe(board, i, col)) { 
+			board[i][col] = 1; 
+
+		
+			if (solveNQUtil(board, col + 1)) 
+				return true; 
+
+		
+			board[i][col] = 0; 
+		} 
+	} 
+
+	
+	return false; 
+} 
+
+
+bool solveNQ() 
+{ 
+	int board[N][N] = { { 0, 0, 0, 0 }, 
+						{ 0, 0, 0, 0 }, 
+						{ 0, 0, 0, 0 }, 
+						{ 0, 0, 0, 0 } }; 
+
+	if (solveNQUtil(board, 0) == false) { 
+		printf("Solution does not exist"); 
+		return false; 
+	} 
+
+	printSolution(board); 
+	return true; 
+} 
+
+
+int main() 
+{ 
+	solveNQ(); 
+	return 0; 
+} 

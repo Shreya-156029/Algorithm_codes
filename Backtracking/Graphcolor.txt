@@ -1,0 +1,87 @@
+
+#include <iostream> 
+#include <list> 
+using namespace std; 
+
+class graphcolour 
+{ 
+	int V; 
+	list<int> *adj; 
+public: 
+	 
+	graphcolour(int V) { this->V = V; adj = new list<int>[V]; } 
+	~graphcolour()	 { delete [] adj; } 
+
+	
+	void edgeaddition(int v, int w); 
+
+	 
+	void greedyColoring(); 
+}; 
+
+void graphcolour::edgeaddition(int v, int w) 
+{ 
+	adj[v].push_back(w); 
+	adj[w].push_back(v);  
+} 
+ 
+void graphcolour::greedyColoring() 
+{ 
+	int result[V]; 
+
+	
+	result[0] = 0; 
+ 
+	for (int u = 1; u < V; u++) 
+		result[u] = -1; 
+
+	bool available[V]; 
+	for (int cr = 0; cr < V; cr++) 
+		available[cr] = false; 
+
+	
+	for (int u = 1; u < V; u++) 
+	{ 
+	
+		list<int>::iterator i; 
+		for (i = adj[u].begin(); i != adj[u].end(); ++i) 
+			if (result[*i] != -1) 
+				available[result[*i]] = true; 
+
+		 
+		int cr; 
+		for (cr = 0; cr < V; cr++) 
+			if (available[cr] == false) 
+				break; 
+
+		result[u] = cr; // Assign the found color 
+
+	
+		for (i = adj[u].begin(); i != adj[u].end(); ++i) 
+			if (result[*i] != -1) 
+				available[result[*i]] = false; 
+	} 
+
+	
+	for (int u = 0; u < V; u++) 
+		cout << "Vertex " << u << " ---> Color "
+			<< result[u] << endl; 
+} 
+
+
+int main() 
+{ 
+	graphcolour g1(5); 
+	g1.edgeaddition(0, 1); 
+	g1.edgeaddition(0, 2); 
+	g1.edgeaddition(1, 2); 
+	g1.edgeaddition(1, 3); 
+	g1.edgeaddition(2, 3); 
+	g1.edgeaddition(3, 4); 
+	cout << "Coloring of graphcolour 1 \n"; 
+	g1.greedyColoring(); 
+
+	
+
+	return 0; 
+} 
